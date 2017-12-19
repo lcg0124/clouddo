@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/../clouddo/pom.xml" />
+        <option value="$PROJECT_DIR$/../clouddo/clouddo-server/pom.xml" />
+        <option value="$PROJECT_DIR$/../clouddo/clouddo-zuul/pom.xml" />
+        <option value="$PROJECT_DIR$/../clouddo/clouddo-admin/pom.xml" />
+        <option value="$PROJECT_DIR$/../clouddo/clouddo-view/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/../clouddo/out" />
+  </component>
+</project>
