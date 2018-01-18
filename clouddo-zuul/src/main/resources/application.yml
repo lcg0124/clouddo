@@ -7,3 +7,8 @@ server:
 spring:
   application:
     name: zuul
+zuul:
+  routes:
+     api-a:
+          path: /admin/**
+          serviceId: admin

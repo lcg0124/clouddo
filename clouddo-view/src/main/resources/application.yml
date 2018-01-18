@@ -1,2 +1,12 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
 server:
-  port: 8091
+  port: 8791
+spring:
+  application:
+    name: clouddo
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
