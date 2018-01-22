@@ -1,7 +1,7 @@
-package com.bootdo.clouddozuul.utils;
+package com.bootdo.clouddocommon.utils;
 
-import com.bootdo.clouddozuul.constants.Constants;
-import com.bootdo.clouddozuul.vo.UserToken;
+import com.bootdo.clouddocommon.Constants.CommonConstants;
+import com.bootdo.clouddocommon.dto.UserToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -16,10 +16,10 @@ public class JwtUtils {
     public static String generateToken(UserToken userToken, int expire) throws Exception {
         String token = Jwts.builder()
                 .setSubject(userToken.getUsername())
-                .claim(Constants.USER_TOKEN_ID, userToken.getUserId())
-                .claim(Constants.USER_TOKEN_NAME, userToken.getName())
+                .claim(CommonConstants.CONTEXT_USER_ID, userToken.getUserId())
+                .claim(CommonConstants.CONTEXT_NAME, userToken.getName())
                 .setExpiration(new Date(System.currentTimeMillis()+expire))
-                .signWith(SignatureAlgorithm.HS256, Constants.JWT_PRIVATE_KEY)
+                .signWith(SignatureAlgorithm.HS256, CommonConstants.JWT_PRIVATE_KEY)
                 .compact();
         return token;
     }
@@ -27,8 +27,8 @@ public class JwtUtils {
 
     public static UserToken getInfoFromToken(String token) throws Exception {
         Claims claims = Jwts.parser()
-                .setSigningKey(Constants.JWT_PRIVATE_KEY).parseClaimsJws(token)
+                .setSigningKey(CommonConstants.JWT_PRIVATE_KEY).parseClaimsJws(token)
                 .getBody();
-        return new UserToken(claims.getSubject(), ((Integer)claims.get(Constants.USER_TOKEN_ID)).longValue() ,claims.get(Constants.USER_TOKEN_NAME).toString());
+        return new UserToken(claims.getSubject(), claims.get(CommonConstants.CONTEXT_USER_ID).toString(),claims.get(CommonConstants.CONTEXT_NAME).toString());
     }
 }

@@ -1,8 +1,8 @@
 package com.bootdo.clouddozuul.filter;
 
-import com.bootdo.clouddozuul.feignClient.AdminService;
-import com.bootdo.clouddozuul.utils.JwtUtils;
-import com.bootdo.clouddozuul.vo.UserToken;
+import com.bootdo.clouddocommon.Constants.CommonConstants;
+import com.bootdo.clouddocommon.dto.UserToken;
+import com.bootdo.clouddocommon.utils.JwtUtils;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.apache.commons.lang.StringUtils;
@@ -21,10 +21,8 @@ import java.io.IOException;
  */
 public class AccessFilter extends ZuulFilter {
 
-    @Autowired
-    AdminService adminService;
 
-    private String startWith = "/clouddo/login,/clouddo/js,/clouddo/css,/admin/login";
+    private String ignorePath = "/login,/js/,/css/,/img/,/fonts/";
 
     @Override
     public String filterType() {
@@ -51,26 +49,23 @@ public class AccessFilter extends ZuulFilter {
         if (isStartWith(requestUri)) {
             return null;
         }
-        String accessToken = getCookieValueByName(request,"token");
-        if (null == accessToken ) {
+        String accessToken = getCookieValueByName(request, "token");
+
+        try {
+            if (null == accessToken) {
+                response.sendRedirect("/clouddo/login");
+            } else {
+                UserToken userToken = JwtUtils.getInfoFromToken(accessToken);
+            }
+        } catch (Exception e) {
+            //  e.printStackTrace();
             try {
                 response.sendRedirect("/clouddo/login");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }else {
-            try {
-                UserToken userToken = JwtUtils.getInfoFromToken(accessToken);
-            } catch (Exception e) {
-                try {
-                    response.sendRedirect("/clouddo/login");
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-                e.printStackTrace();
+            } catch (IOException e1) {
+                e1.printStackTrace();
             }
         }
-        ctx.addZuulRequestHeader("Authorization", accessToken);
+        ctx.addZuulRequestHeader(CommonConstants.CONTEXT_TOKEN, accessToken);
         return null;
     }
 
@@ -84,8 +79,10 @@ public class AccessFilter extends ZuulFilter {
     }
 
     private boolean isStartWith(String requestUri) {
+        requestUri =  requestUri.substring(requestUri.indexOf("/", 1));
         boolean flag = false;
-        for (String s : startWith.split(",")) {
+        for (String s : ignorePath.split(",")) {
+
             if (requestUri.startsWith(s)) {
                 return true;
             }
@@ -95,7 +92,7 @@ public class AccessFilter extends ZuulFilter {
 
     private String getCookieValueByName(HttpServletRequest request, String name) {
         Cookie[] cookies = request.getCookies();
-        if(null==cookies){
+        if (null == cookies) {
             return null;
         }
         for (Cookie cookie : cookies) {
@@ -106,5 +103,11 @@ public class AccessFilter extends ZuulFilter {
         return null;
     }
 
-
+    public static void main(String[] args) {
+        String s = "/clouddo/css/kk";
+        s = s.substring(s.indexOf("/", 1));
+        System.out.println(
+                s
+        );
+    }
 }

@@ -3,6 +3,7 @@ package com.bootdo.clouddoadmin.controller;
 import com.bootdo.clouddoadmin.domain.MenuDO;
 import com.bootdo.clouddoadmin.domain.Tree;
 import com.bootdo.clouddoadmin.service.MenuService;
+import com.bootdo.clouddocommon.context.FilterContextHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +22,10 @@ public class MenuController {
     @Autowired
     MenuService menuService;
 
-//    List<MenuDO> list(String userId) {
-//        List<Tree<MenuDO>> menus = menuService.listMenuTree(userId);
-//    }
+    @RequestMapping("/currentUserMenus")
+    List<Tree<MenuDO>> list() {
+        String id = FilterContextHandler.getUserID();
+        List<Tree<MenuDO>> menus = menuService.listMenuTree(Long.parseLong(FilterContextHandler.getUserID()));
+        return menus;
+    }
 }

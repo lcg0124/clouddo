@@ -137,15 +137,7 @@ public class Tree<T> {
 		this.hasChildren = isChildren;
 		this.parentId = parentID;
 	}
-
 	public Tree() {
 		super();
 	}
-
-	@Override
-	public String toString() {
-
-		return JSON.toJSONString(this);
-	}
-
 }

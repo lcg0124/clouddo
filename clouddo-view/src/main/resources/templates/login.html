@@ -125,7 +125,7 @@
             success: function (r) {
                 if (r.code == 0) {
                     localStorage.setItem("token", r.token);
-                    setCookie("token",r.token);
+                    setCookie("token",r.token,1);
                     parent.location.href = '/';
                 } else {
                     layer.msg(r.msg);

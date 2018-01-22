@@ -1,4 +1,4 @@
-package com.bootdo.clouddozuul.vo;
+package com.bootdo.clouddocommon.dto;
 
 import java.io.Serializable;
 
@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class UserToken implements Serializable{
     private static final long serialVersionUID = 1L;
 
-    public UserToken(String username, Long userId, String name) {
+    public UserToken(String username, String userId, String name) {
         this.userId = userId;
         this.username = username;
         this.name = name;
@@ -18,7 +18,7 @@ public class UserToken implements Serializable{
     /**
      * 用户id
      */
-    private Long userId;
+    private String userId;
     /**
      * 用户登录名
      */
@@ -28,11 +28,11 @@ public class UserToken implements Serializable{
      */
     private String name;
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

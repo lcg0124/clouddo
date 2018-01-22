@@ -4,10 +4,10 @@ import com.bootdo.clouddoadmin.domain.TokenDO;
 import com.bootdo.clouddoadmin.domain.UserDO;
 import com.bootdo.clouddoadmin.service.TokenService;
 import com.bootdo.clouddoadmin.service.UserService;
-import com.bootdo.clouddoadmin.utils.JwtUtils;
 import com.bootdo.clouddoadmin.utils.MD5Utils;
 import com.bootdo.clouddoadmin.utils.R;
-import com.bootdo.clouddoadmin.vo.UserToken;
+import com.bootdo.clouddocommon.dto.UserToken;
+import com.bootdo.clouddocommon.utils.JwtUtils;
 import com.sun.org.apache.xpath.internal.SourceTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,7 +40,7 @@ public class LoginController {
         if (null == userDO || !userDO.getPassword().equals(password)) {
             return R.error("用户或密码错误");
         }
-        UserToken userToken = new UserToken(userDO.getUsername(), userDO.getUserId(), userDO.getName());
+        UserToken userToken = new UserToken(userDO.getUsername(), userDO.getUserId().toString(), userDO.getName());
         String token="";
         try {
             token = JwtUtils.generateToken(userToken, 30*60*1000);
