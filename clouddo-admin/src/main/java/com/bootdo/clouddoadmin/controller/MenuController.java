@@ -22,6 +22,8 @@ public class MenuController {
     @Autowired
     MenuService menuService;
 
+
+
     @RequestMapping("/currentUserMenus")
     List<Tree<MenuDO>> list() {
         String id = FilterContextHandler.getUserID();

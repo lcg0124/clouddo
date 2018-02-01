@@ -25,4 +25,9 @@ public class UserController {
         model.addAttribute("roles", roleService.list());
         return "admin/user/add";
     }
+
+    @GetMapping("edit")
+    String edit(Model model){
+        return  "admin/user/edit";
+    }
 }

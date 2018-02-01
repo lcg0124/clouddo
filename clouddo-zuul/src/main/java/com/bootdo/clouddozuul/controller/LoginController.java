@@ -14,6 +14,6 @@ import java.io.IOException;
 public class LoginController {
     @GetMapping({"/",""})
     void login(HttpServletResponse response) throws IOException {
-        response.sendRedirect("/clouddo/index");
+        response.sendRedirect("/clouddo/page/index.html");
     }
 }

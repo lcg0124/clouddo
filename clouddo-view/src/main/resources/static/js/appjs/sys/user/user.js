@@ -1,5 +1,9 @@
-var prefix = "/admin/user"
+var prefix = "/admin/user";
+var s_edit_h='';
+var s_remove_h;
+var s_resetPwd_h;
 $(function() {
+
 	var deptId = '';
 	getTreeData();
 	load(deptId);
@@ -95,7 +99,9 @@ function load(deptId) {
 					} ]
 			});
 }
+
 function reLoad() {
+
 	$('#exampleTable').bootstrapTable('refresh');
 }
 function add() {

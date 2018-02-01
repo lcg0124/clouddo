@@ -29,7 +29,8 @@
             <ul class="nav" id="side-menu">
                 <li class="nav-header">
                     <div>
-                        <span><img alt="image" class="img-circle" height="60" width="60" src="../img/photo_s.jpg"/></span>
+                        <span><img alt="image" class="img-circle" height="60" width="60"
+                                   src="../img/photo_s.jpg"/></span>
                         <h3 class="" style="color: #ffffff">
                             </i>BootDo后台管理系统
                         </h3>
@@ -287,7 +288,7 @@
 <script src="../js/plugins/pace/pace.min.js"></script>
 <!-- vue -->
 <script src="../js/vue.min.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="../js/axios.min.js"></script>
 
 <script src="../js/appjs/oa/webSocket/sockjs.min.js"></script>
 <script src="../js/appjs/oa/webSocket/stomp.min.js"></script>
@@ -299,34 +300,35 @@
         delCookie('token');
         parent.location.href = '/';
     }
-    var wrapper= new Vue({
-        el:'#wrapper',
-        data:{
-            menus:'',
-            total:5,
-            rows:''
+
+    var wrapper = new Vue({
+        el: '#wrapper',
+        data: {
+            menus: '',
+            total: 5,
+            rows: ''
         },
-        methods:{
-            initMenu:function () {
+        methods: {
+            initMenu: function () {
                 var that = this;
-               axios.get('/admin/menu/currentUserMenus')
-                   .then(function (res) {
-                       that.menus=res.data;
-                       console.log(that.menus);
-                       that.$nextTick(function () {
-                           $('#side-menu').metisMenu();
-                               menuTab();
-                           }
-                       );
-                   }).catch(function (err) {
+                axios.get('/admin/menu/currentUserMenus')
+                    .then(function (res) {
+                        that.menus = res.data;
+                        console.log(that.menus);
+                        that.$nextTick(function () {
+                                $('#side-menu').metisMenu();
+                                menuTab();
+                            }
+                        );
+                    }).catch(function (err) {
                     console.log(err)
-               })
+                })
             },
-            personal:function () {
+            personal: function () {
 
             }
         },
-        mounted:function () {
+        mounted: function () {
             this.initMenu();
         }
     });

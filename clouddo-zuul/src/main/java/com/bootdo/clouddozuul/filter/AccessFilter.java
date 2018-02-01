@@ -102,12 +102,4 @@ public class AccessFilter extends ZuulFilter {
         }
         return null;
     }
-
-    public static void main(String[] args) {
-        String s = "/clouddo/css/kk";
-        s = s.substring(s.indexOf("/", 1));
-        System.out.println(
-                s
-        );
-    }
 }
