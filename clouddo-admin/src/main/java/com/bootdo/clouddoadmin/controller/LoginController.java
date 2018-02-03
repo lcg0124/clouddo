@@ -1,22 +1,18 @@
 package com.bootdo.clouddoadmin.controller;
 
-import com.bootdo.clouddoadmin.domain.TokenDO;
 import com.bootdo.clouddoadmin.domain.UserDO;
 import com.bootdo.clouddoadmin.service.TokenService;
 import com.bootdo.clouddoadmin.service.UserService;
 import com.bootdo.clouddoadmin.utils.MD5Utils;
-import com.bootdo.clouddoadmin.utils.R;
 import com.bootdo.clouddocommon.dto.UserToken;
 import com.bootdo.clouddocommon.utils.JwtUtils;
-import com.sun.org.apache.xpath.internal.SourceTree;
+import com.bootdo.clouddocommon.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 

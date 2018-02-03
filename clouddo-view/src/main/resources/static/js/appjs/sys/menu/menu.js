@@ -11,7 +11,7 @@ var load = function () {
                 parentCode: 'parentId',
                 type: "GET", // 请求数据的ajax类型
                 url: prefix + '/list', // 请求数据的ajax的url
-                ajaxParams: {}, // 请求数据的ajax的data属性
+                ajaxParams: {sort:'order_num'}, // 请求数据的ajax的data属性
                 expandColumn: '1',// 在哪一列上面显示展开按钮
                 striped: true, // 是否各行渐变色
                 bordered: true, // 是否显示边框
@@ -23,19 +23,22 @@ var load = function () {
                         field: 'menuId',
                         visible: false,
                         align: 'center',
-                        valign: 'middle',
-                        width: '50px'
+                        valign: 'center',
+                        width: '5%'
                     },
                     {
                         title: '名称',
-                        field: 'name'
+                        valign: 'center',
+                        field: 'name',
+                        width: '20%'
                     },
 
                     {
                         title: '图标',
                         field: 'icon',
                         align: 'center',
-                        valign: 'middle',
+                        valign: 'center',
+                        width : '5%',
                         formatter: function (item, index) {
                             return item.icon == null ? ''
                                 : '<i class="' + item.icon
@@ -46,7 +49,8 @@ var load = function () {
                         title: '类型',
                         field: 'type',
                         align: 'center',
-                        valign: 'middle',
+                        valign: 'center',
+                        width : '10%',
                         formatter: function (item, index) {
                             if (item.type === 0) {
                                 return '<span class="label label-primary">目录</span>';
@@ -61,10 +65,14 @@ var load = function () {
                     },
                     {
                         title: '地址',
+                        valign: 'center',
+                        width : '20%',
                         field: 'url'
                     },
                     {
                         title: '权限标识',
+                        valign: 'center',
+                        width : '20%',
                         field: 'perms'
                     },
                     {
@@ -72,6 +80,7 @@ var load = function () {
                         field: 'id',
                         align: 'center',
                         formatter: function (item, index) {
+                            var s_edit_h,s_add_h,s_remove_h;
                             var e = '<a class="btn btn-primary btn-sm '
                                 + s_edit_h
                                 + '" href="#" mce_href="#" title="编辑" onclick="edit(\''
@@ -113,10 +122,10 @@ function remove(id) {
         btn: ['确定', '取消']
     }, function () {
         $.ajax({
-            url: prefix + "/remove",
+            url: prefix + "/remove/"+id,
             type: "post",
             data: {
-                'id': id
+                _method:"DELETE"
             },
             success: function (data) {
                 if (data.code == 0) {

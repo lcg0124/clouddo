@@ -3,7 +3,7 @@ package com.bootdo.clouddoadmin.controller;
 import com.bootdo.clouddoadmin.domain.DeptDO;
 import com.bootdo.clouddoadmin.domain.Tree;
 import com.bootdo.clouddoadmin.service.DeptService;
-import com.bootdo.clouddoadmin.utils.R;
+import com.bootdo.clouddocommon.utils.R;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -36,7 +36,6 @@ public class DeptController extends BaseController {
 
 	@ResponseBody
 	@GetMapping("/list")
-	@RequiresPermissions("system:sysDept:sysDept")
 	public List<DeptDO> list() {
 		Map<String, Object> query = new HashMap<>(16);
 		List<DeptDO> sysDeptList = sysDeptService.list(query);

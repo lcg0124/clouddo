@@ -3,8 +3,10 @@ package com.bootdo.clouddoadmin.controller;
 import com.bootdo.clouddoadmin.domain.UserDO;
 import com.bootdo.clouddoadmin.service.RoleService;
 import com.bootdo.clouddoadmin.service.UserService;
+import com.bootdo.clouddoadmin.utils.MD5Utils;
 import com.bootdo.clouddocommon.utils.PageUtils;
 import com.bootdo.clouddocommon.utils.Query;
+import com.bootdo.clouddocommon.utils.R;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,61 +20,32 @@ import java.util.List;
 import java.util.Map;
 
 @RequestMapping("/user")
-@Controller
+@RestController
 public class UserController extends BaseController {
-	private String prefix="system/user"  ;
-	@Autowired
-	UserService userService;
-	@Autowired
-	RoleService roleService;
-//	@Autowired
-//	DictService dictService;
-	@GetMapping("")
-	String user(Model model) {
-		return prefix + "/user";
-	}
+    @Autowired
+    UserService userService;
+    @Autowired
+    RoleService roleService;
 
-	@GetMapping("/list")
+    @GetMapping("/list")
+    @ResponseBody
+    PageUtils list(@RequestParam Map<String, Object> params) {
+        Query query = new Query(params);
+        List<UserDO> sysUserList = userService.list(query);
+        int total = userService.count(query);
+        PageUtils pageUtil = new PageUtils(sysUserList, total);
+        return pageUtil;
+    }
+
+	@PostMapping("/save")
 	@ResponseBody
-	PageUtils list(@RequestParam Map<String, Object> params) {
-		// 查询列表数据
-		Query query = new Query(params);
-		List<UserDO> sysUserList = userService.list(query);
-		int total = userService.count(query);
-		PageUtils pageUtil = new PageUtils(sysUserList, total);
-		return pageUtil;
+    R save(UserDO user) {
+		user.setPassword(MD5Utils.encrypt(user.getUsername(), user.getPassword()));
+		if (userService.save(user) > 0) {
+			return R.ok();
+		}
+		return R.error();
 	}
-
-//	@GetMapping("/add")
-//	String add(Model model) {
-//		List<RoleDO> roles = roleService.list();
-//		model.addAttribute("roles", roles);
-//		return prefix + "/add";
-//	}
-//
-//	@RequiresPermissions("sys:user:edit")
-//	@GetMapping("/edit/{id}")
-//	String edit(Model model, @PathVariable("id") Long id) {
-//		UserDO userDO = userService.get(id);
-//		model.addAttribute("user", userDO);
-//		List<RoleDO> roles = roleService.list(id);
-//		model.addAttribute("roles", roles);
-//		return prefix+"/edit";
-//	}
-//
-//	@RequiresPermissions("sys:user:add")
-//	@PostMapping("/save")
-//	@ResponseBody
-//	R save(UserDO user) {
-//		if (Constant.DEMO_ACCOUNT.equals(getUsername())) {
-//			return R.error(1, "演示系统不允许修改,完整体验请部署程序");
-//		}
-//		user.setPassword(MD5Utils.encrypt(user.getUsername(), user.getPassword()));
-//		if (userService.save(user) > 0) {
-//			return R.ok();
-//		}
-//		return R.error();
-//	}
 //
 //	@RequiresPermissions("sys:user:edit")
 //	@Log("更新用户")

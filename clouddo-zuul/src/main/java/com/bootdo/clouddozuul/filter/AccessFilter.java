@@ -22,7 +22,7 @@ import java.io.IOException;
 public class AccessFilter extends ZuulFilter {
 
 
-    private String ignorePath = "/login,/js/,/css/,/img/,/fonts/";
+    private String ignorePath = "/public/login,/login,/js/,/css/,/img/,/fonts/";
 
     @Override
     public String filterType() {
@@ -50,17 +50,15 @@ public class AccessFilter extends ZuulFilter {
             return null;
         }
         String accessToken = getCookieValueByName(request, "token");
-
         try {
             if (null == accessToken) {
-                response.sendRedirect("/clouddo/login");
+                response.sendRedirect("/clouddo/public/login.html");
             } else {
                 UserToken userToken = JwtUtils.getInfoFromToken(accessToken);
             }
         } catch (Exception e) {
-            //  e.printStackTrace();
             try {
-                response.sendRedirect("/clouddo/login");
+                response.sendRedirect("/clouddo/public/login.html");
             } catch (IOException e1) {
                 e1.printStackTrace();
             }

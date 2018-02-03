@@ -5,6 +5,7 @@ import com.bootdo.clouddoadmin.domain.MenuDO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -17,7 +18,7 @@ public interface MenuService {
 
 	Tree<MenuDO> getTree(Long id);
 
-	List<MenuDO> list();
+	List<MenuDO> list(Map<String, Object> params);
 
 	int remove(Long id);
 

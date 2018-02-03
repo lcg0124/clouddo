@@ -23,7 +23,7 @@ function save() {
 	$.ajax({
 		cache : true,
 		type : "POST",
-		url : "/sys/user/save",
+		url : "/admin/user/save",
 		data : $('#signupForm').serialize(),// 你的formid
 		async : false,
 		error : function(request) {
