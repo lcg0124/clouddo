@@ -2,6 +2,9 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+security:
+  basic:
+    enabled: false
 server:
   port: 8762
 spring:
@@ -11,6 +14,9 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/clouddo?useUnicode=true&characterEncoding=utf8
     username: root
     password: root
+  jackson:
+    date-format: yyyy-MM-dd
+    time-zone: GMT+8
 mybatis:
   mapper-locations: mapper/**Mapper.xml
   configuration:

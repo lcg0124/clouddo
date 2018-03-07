@@ -81,16 +81,18 @@ public class UserServiceImpl implements UserService {
 		int r = userMapper.update(user);
 		Long userId = user.getUserId();
 		List<Long> roles = user.getroleIds();
-		userRoleMapper.removeByUserId(userId);
-		List<UserRoleDO> list = new ArrayList<>();
-		for (Long roleId : roles) {
-			UserRoleDO ur = new UserRoleDO();
-			ur.setUserId(userId);
-			ur.setRoleId(roleId);
-			list.add(ur);
-		}
-		if (list.size() > 0) {
-			userRoleMapper.batchSave(list);
+		if(null!=roles){
+			userRoleMapper.removeByUserId(userId);
+			List<UserRoleDO> list = new ArrayList<>();
+			for (Long roleId : roles) {
+				UserRoleDO ur = new UserRoleDO();
+				ur.setUserId(userId);
+				ur.setRoleId(roleId);
+				list.add(ur);
+			}
+			if (list.size() > 0) {
+				userRoleMapper.batchSave(list);
+			}
 		}
 		return r;
 	}
@@ -102,10 +104,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean exit(Map<String, Object> params) {
-		boolean exit;
-		exit = userMapper.list(params).size() > 0;
-		return exit;
+	public boolean exits(Map<String, Object> params) {
+		boolean exits = userMapper.list(params).size() > 0;
+		return exits;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.bootdo.clouddoadmin.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -38,6 +39,7 @@ public class UserDO implements Serializable {
     //性别
     private Long sex;
     //出身日期
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birth;
     //图片ID

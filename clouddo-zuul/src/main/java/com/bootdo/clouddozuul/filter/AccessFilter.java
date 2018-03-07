@@ -1,8 +1,13 @@
 package com.bootdo.clouddozuul.filter;
 
 import com.bootdo.clouddocommon.Constants.CommonConstants;
+import com.bootdo.clouddocommon.context.FilterContextHandler;
+import com.bootdo.clouddocommon.dto.MenuDTO;
 import com.bootdo.clouddocommon.dto.UserToken;
+import com.bootdo.clouddocommon.utils.JsonUtils;
 import com.bootdo.clouddocommon.utils.JwtUtils;
+import com.bootdo.clouddocommon.utils.R;
+import com.bootdo.clouddozuul.prc.admin.MenuService;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.apache.commons.lang.StringUtils;
@@ -14,15 +19,20 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @version V1.0
  * @Author bootdo 1992lcg@163.com
  */
 public class AccessFilter extends ZuulFilter {
+    @Autowired
+    MenuService menuService;
 
 
-    private String ignorePath = "/public/login,/login,/js/,/css/,/img/,/fonts/";
+    private String ignorePath = "/admin/api/login";
 
     @Override
     public String filterType() {
@@ -31,7 +41,7 @@ public class AccessFilter extends ZuulFilter {
 
     @Override
     public int filterOrder() {
-        return 1;
+        return 10000;
     }
 
     @Override
@@ -44,40 +54,67 @@ public class AccessFilter extends ZuulFilter {
     public Object run() {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
-        HttpServletResponse response = ctx.getResponse();
         final String requestUri = request.getRequestURI();
         if (isStartWith(requestUri)) {
             return null;
         }
-        String accessToken = getCookieValueByName(request, "token");
-        try {
-            if (null == accessToken) {
-                response.sendRedirect("/clouddo/public/login.html");
-            } else {
-                UserToken userToken = JwtUtils.getInfoFromToken(accessToken);
-            }
-        } catch (Exception e) {
-            try {
-                response.sendRedirect("/clouddo/public/login.html");
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+        String accessToken = request.getHeader(CommonConstants.CONTEXT_TOKEN);
+        if (null == accessToken) {
+            setFailedRequest(R.error401(), 200);
+            return null;
         }
-        ctx.addZuulRequestHeader(CommonConstants.CONTEXT_TOKEN, accessToken);
+        try {
+            UserToken userToken = JwtUtils.getInfoFromToken(accessToken);
+        } catch (Exception e) {
+            setFailedRequest(R.error401(), 200);
+            return null;
+        }
+        FilterContextHandler.setToken(accessToken);
+        if(!havePermission(request)){
+            setFailedRequest(R.error403(), 200);
+            return null;
+        }
+        Set<String> headers = (Set<String>) ctx.get("ignoredHeaders");
+        //We need our JWT tokens relayed to resource servers
+        //添加自己header
+//        ctx.addZuulRequestHeader(CommonConstants.CONTEXT_TOKEN, accessToken);
+        //移除忽略token
+        headers.remove("authorization");
         return null;
+//        RequestContext ctx = RequestContext.getCurrentContext();
+//        Set<String> headers = (Set<String>) ctx.get("ignoredHeaders");
+//        // We need our JWT tokens relayed to resource servers
+//        headers.remove("authorization");
+//        return null;
     }
 
-    private void setFailedRequest(String body, int code) {
+    private void setFailedRequest(Object body, int code) {
         RequestContext ctx = RequestContext.getCurrentContext();
         ctx.setResponseStatusCode(code);
-        if (ctx.getResponseBody() == null) {
-            ctx.setResponseBody(body);
-            ctx.setSendZuulResponse(false);
+        HttpServletResponse response = ctx.getResponse();
+        PrintWriter out = null;
+        try{
+            out = response.getWriter();
+            out.write(JsonUtils.toJson(body));
+            out.flush();
+        }catch(IOException e){
+            e.printStackTrace();
         }
+        ctx.setSendZuulResponse(false);
+    }
+
+    private boolean havePermission(HttpServletRequest request){
+        String currentURL = request.getRequestURI();
+        List<MenuDTO> menuDTOS = menuService.userMenus();
+        for(MenuDTO menuDTO:menuDTOS){
+            if(currentURL!=null&&null!=menuDTO.getUrl()&&currentURL.startsWith(menuDTO.getUrl())){
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isStartWith(String requestUri) {
-        requestUri =  requestUri.substring(requestUri.indexOf("/", 1));
         boolean flag = false;
         for (String s : ignorePath.split(",")) {
 
@@ -86,18 +123,5 @@ public class AccessFilter extends ZuulFilter {
             }
         }
         return flag;
-    }
-
-    private String getCookieValueByName(HttpServletRequest request, String name) {
-        Cookie[] cookies = request.getCookies();
-        if (null == cookies) {
-            return null;
-        }
-        for (Cookie cookie : cookies) {
-            if (name.equals(cookie.getName())) {
-                return cookie.getValue();
-            }
-        }
-        return null;
     }
 }

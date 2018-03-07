@@ -6,8 +6,10 @@ import com.bootdo.clouddoadmin.dao.MenuDao;
 import com.bootdo.clouddoadmin.dao.RoleMenuDao;
 import com.bootdo.clouddoadmin.domain.MenuDO;
 import com.bootdo.clouddoadmin.service.MenuService;
+import com.bootdo.clouddocommon.dto.MenuDTO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,21 +33,33 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	public Tree<MenuDO> getSysMenuTree(Long id) {
 		List<Tree<MenuDO>> trees = new ArrayList<Tree<MenuDO>>();
-		List<MenuDO> menuDOs = menuMapper.listMenuByUserId(id);
-		for (MenuDO sysMenuDO : menuDOs) {
+		List<MenuDO> menuDOs = userMenus(id);
+		for (MenuDO menuDO : menuDOs) {
 			Tree<MenuDO> tree = new Tree<MenuDO>();
-			tree.setId(sysMenuDO.getMenuId().toString());
-			tree.setParentId(sysMenuDO.getParentId().toString());
-			tree.setText(sysMenuDO.getName());
+			tree.setId(menuDO.getMenuId().toString());
+			tree.setParentId(menuDO.getParentId().toString());
+			tree.setText(menuDO.getName());
 			Map<String, Object> attributes = new HashMap<>(16);
-			attributes.put("url", sysMenuDO.getUrl());
-			attributes.put("icon", sysMenuDO.getIcon());
+			attributes.put("url", menuDO.getUrl());
+			attributes.put("icon", menuDO.getIcon());
 			tree.setAttributes(attributes);
 			trees.add(tree);
 		}
 		// 默认顶级菜单为０，根据数据库实际情况调整
 		Tree<MenuDO> t = BuildTree.build(trees);
 		return t;
+	}
+
+	@Cacheable(value = "permission",key = "#userId")
+	@Override
+	public List<MenuDO> userMenus(Long userId) {
+		return  menuMapper.listMenuByUserId(userId);
+	}
+
+	@Override
+	@CacheEvict(value = "permission",key = "#userId")
+	public boolean clearCache(Long userId){
+		return true;
 	}
 
 	@Override
@@ -84,15 +98,21 @@ public class MenuServiceImpl implements MenuService {
 	public Tree<MenuDO> getTree() {
 		List<Tree<MenuDO>> trees = new ArrayList<Tree<MenuDO>>();
 		List<MenuDO> menuDOs = menuMapper.list(new HashMap<>(16));
-		for (MenuDO sysMenuDO : menuDOs) {
-			Tree<MenuDO> tree = new Tree<MenuDO>();
-			tree.setId(sysMenuDO.getMenuId().toString());
-			tree.setParentId(sysMenuDO.getParentId().toString());
-			tree.setText(sysMenuDO.getName());
+		for (MenuDO menuDO : menuDOs) {
+            Tree<MenuDO> tree = new Tree<MenuDO>();
+			tree.setId(menuDO.getMenuId().toString());
+			tree.setParentId(menuDO.getParentId().toString());
+			tree.setText(menuDO.getName());
+			tree.setObject(menuDO);
+//			Map<String,Object> map =new HashMap<>(16);
+//			map.put("url",menuDO.getUrl());
+//			map.put("perms",menuDO.getPerms());
+//
+//			tree.setAttributes(map);
 			trees.add(tree);
 		}
 		// 默认顶级菜单为０，根据数据库实际情况调整
-		Tree<MenuDO> t = BuildTree.build(trees);
+        Tree<MenuDO> t = BuildTree.build(trees);
 		return t;
 	}
 
@@ -109,13 +129,13 @@ public class MenuServiceImpl implements MenuService {
 		}
 		List<Tree<MenuDO>> trees = new ArrayList<Tree<MenuDO>>();
 		List<MenuDO> menuDOs = menuMapper.list(new HashMap<String, Object>(16));
-		for (MenuDO sysMenuDO : menuDOs) {
+		for (MenuDO menuDO : menuDOs) {
 			Tree<MenuDO> tree = new Tree<MenuDO>();
-			tree.setId(sysMenuDO.getMenuId().toString());
-			tree.setParentId(sysMenuDO.getParentId().toString());
-			tree.setText(sysMenuDO.getName());
+			tree.setId(menuDO.getMenuId().toString());
+			tree.setParentId(menuDO.getParentId().toString());
+			tree.setText(menuDO.getName());
 			Map<String, Object> state = new HashMap<>(16);
-			Long menuId = sysMenuDO.getMenuId();
+			Long menuId = menuDO.getMenuId();
 			if (menuIds.contains(menuId)) {
 				state.put("selected", true);
 			} else {
@@ -145,14 +165,14 @@ public class MenuServiceImpl implements MenuService {
 	public List<Tree<MenuDO>> listMenuTree(Long id) {
 		List<Tree<MenuDO>> trees = new ArrayList<Tree<MenuDO>>();
 		List<MenuDO> menuDOs = menuMapper.listMenuByUserId(id);
-		for (MenuDO sysMenuDO : menuDOs) {
+		for (MenuDO menuDO : menuDOs) {
 			Tree<MenuDO> tree = new Tree<MenuDO>();
-			tree.setId(sysMenuDO.getMenuId().toString());
-			tree.setParentId(sysMenuDO.getParentId().toString());
-			tree.setText(sysMenuDO.getName());
+			tree.setId(menuDO.getMenuId().toString());
+			tree.setParentId(menuDO.getParentId().toString());
+			tree.setText(menuDO.getName());
 			Map<String, Object> attributes = new HashMap<>(16);
-			attributes.put("url", sysMenuDO.getUrl());
-			attributes.put("icon", sysMenuDO.getIcon());
+			attributes.put("url", menuDO.getUrl());
+			attributes.put("icon", menuDO.getIcon());
 			tree.setAttributes(attributes);
 			trees.add(tree);
 		}

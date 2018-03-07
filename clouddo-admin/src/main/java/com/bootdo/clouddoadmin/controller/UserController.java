@@ -1,9 +1,12 @@
 package com.bootdo.clouddoadmin.controller;
 
 import com.bootdo.clouddoadmin.domain.UserDO;
+import com.bootdo.clouddoadmin.dto.UserRoleDTO;
 import com.bootdo.clouddoadmin.service.RoleService;
 import com.bootdo.clouddoadmin.service.UserService;
 import com.bootdo.clouddoadmin.utils.MD5Utils;
+import com.bootdo.clouddocommon.context.FilterContextHandler;
+import com.bootdo.clouddocommon.dto.LoginUserDTO;
 import com.bootdo.clouddocommon.utils.PageUtils;
 import com.bootdo.clouddocommon.utils.Query;
 import com.bootdo.clouddocommon.utils.R;
@@ -19,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 @RestController
 public class UserController extends BaseController {
     @Autowired
@@ -27,8 +30,21 @@ public class UserController extends BaseController {
     @Autowired
     RoleService roleService;
 
-    @GetMapping("/list")
-    @ResponseBody
+    @GetMapping("/currentUser")
+	LoginUserDTO currentUser(){
+		LoginUserDTO loginUserDTO = new LoginUserDTO();
+		loginUserDTO.setUserId(FilterContextHandler.getUserID());
+		loginUserDTO.setUsername(FilterContextHandler.getUsername());
+		loginUserDTO.setName(FilterContextHandler.getName());
+		return loginUserDTO;
+	}
+
+    @GetMapping("/get/{id}")
+	UserDO get(@PathVariable("id") Long id ){
+    	return userService.get(id);
+	}
+
+    @GetMapping()
     PageUtils list(@RequestParam Map<String, Object> params) {
         Query query = new Query(params);
         List<UserDO> sysUserList = userService.list(query);
@@ -37,30 +53,25 @@ public class UserController extends BaseController {
         return pageUtil;
     }
 
-	@PostMapping("/save")
-	@ResponseBody
-    R save(UserDO user) {
+	@PostMapping()
+    R save(@RequestBody UserDO user) {
 		user.setPassword(MD5Utils.encrypt(user.getUsername(), user.getPassword()));
 		if (userService.save(user) > 0) {
 			return R.ok();
 		}
 		return R.error();
 	}
-//
-//	@RequiresPermissions("sys:user:edit")
-//	@Log("更新用户")
-//	@PostMapping("/update")
-//	@ResponseBody
-//	R update(UserDO user) {
-//		if (Constant.DEMO_ACCOUNT.equals(getUsername())) {
-//			return R.error(1, "演示系统不允许修改,完整体验请部署程序");
-//		}
-//		if (userService.update(user) > 0) {
-//			return R.ok();
-//		}
-//		return R.error();
-//	}
-//
+	@PutMapping()
+	R update(@RequestBody UserDO user) {
+		if (userService.update(user) > 0) {
+			return R.ok();
+		}
+		return R.error();
+	}
+	@GetMapping("roles/{id}")
+	List<UserRoleDTO> roles(@PathVariable("id") Long id){
+		return roleService.list(id);
+	}
 //
 //	@RequiresPermissions("sys:user:edit")
 //	@PostMapping("/updatePeronal")
@@ -76,39 +87,30 @@ public class UserController extends BaseController {
 //	}
 //
 //
-//	@RequiresPermissions("sys:user:remove")
-//	@PostMapping("/remove")
-//	@ResponseBody
-//	R remove(Long id) {
-//		if (Constant.DEMO_ACCOUNT.equals(getUsername())) {
-//			return R.error(1, "演示系统不允许修改,完整体验请部署程序");
-//		}
-//		if (userService.remove(id) > 0) {
-//			return R.ok();
-//		}
-//		return R.error();
-//	}
+	@DeleteMapping()
+	R remove( Long id) {
+		if (userService.remove(id) > 0) {
+			return R.ok();
+		}
+		return R.error();
+	}
 //
-//	@RequiresPermissions("sys:user:batchRemove")
-//	@PostMapping("/batchRemove")
-//	@ResponseBody
-//	R batchRemove(@RequestParam("ids[]") Long[] userIds) {
-//		if (Constant.DEMO_ACCOUNT.equals(getUsername())) {
-//			return R.error(1, "演示系统不允许修改,完整体验请部署程序");
-//		}
-//		int r = userService.batchremove(userIds);
-//		if (r > 0) {
-//			return R.ok();
-//		}
-//		return R.error();
-//	}
+	@PostMapping("/batchRemove")
+	@ResponseBody
+	R batchRemove(@RequestParam("ids[]") Long[] userIds) {
+		int r = userService.batchremove(userIds);
+		if (r > 0) {
+			return R.ok();
+		}
+		return R.error();
+	}
 //
-//	@PostMapping("/exit")
-//	@ResponseBody
-//	boolean exits(@RequestParam Map<String, Object> params) {
-//		// 存在，不通过，false
-//		return !userService.exit(params);
-//	}
+	@PostMapping("/exits")
+	@ResponseBody
+	boolean exits(@RequestParam Map<String, Object> params) {
+		// 存在，不通过，false
+		return !userService.exits(params);
+	}
 //
 //	@RequiresPermissions("sys:user:resetPwd")
 //	@GetMapping("/resetPwd/{id}")

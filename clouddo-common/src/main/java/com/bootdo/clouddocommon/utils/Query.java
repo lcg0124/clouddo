@@ -8,19 +8,27 @@ import java.util.Map;
  */
 public class Query extends LinkedHashMap<String, Object> {
 	private static final long serialVersionUID = 1L;
-	// 
 	private int offset;
-	// 每页条数
 	private int limit;
+	private int page;
 
 	public Query(Map<String, Object> params) {
 		this.putAll(params);
-		// 分页参数
-		this.offset = Integer.parseInt(params.get("offset").toString());
-		this.limit = Integer.parseInt(params.get("limit").toString());
-		this.put("offset", offset);
-		this.put("page", offset / limit + 1);
-		this.put("limit", limit);
+		if(null!=params.get("limit")){
+			this.limit = Integer.parseInt(params.get("limit").toString());
+			if(null!=params.get("offset")){
+				this.offset = Integer.parseInt(params.get("offset").toString());
+				//this.put("page", offset / limit + 1);
+				this.put("limit",limit);
+			}
+			if(null!=params.get("page")){
+				this.page = Integer.parseInt(params.get("page").toString());
+				this.put("offset", (page-1)*limit);
+				this.put("limit",limit);
+			}
+//			this.put("offset", offset);
+//			this.put("limit", limit);
+		}
 	}
 
 	public int getOffset() {
@@ -37,5 +45,13 @@ public class Query extends LinkedHashMap<String, Object> {
 
 	public void setLimit(int limit) {
 		this.limit = limit;
+	}
+
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
 	}
 }

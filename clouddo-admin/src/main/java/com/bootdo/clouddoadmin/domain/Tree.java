@@ -1,10 +1,10 @@
 package com.bootdo.clouddoadmin.domain;
 
 import com.alibaba.fastjson.JSON;
+import com.bootdo.clouddocommon.utils.R;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * tree TODO <br>
@@ -12,7 +12,8 @@ import java.util.Map;
  * @author kangxu2 2017-1-7
  * 
  */
-public class Tree<T> {
+public class Tree<T>  {
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 节点ID
 	 */
@@ -33,6 +34,10 @@ public class Tree<T> {
 	 * 节点属性
 	 */
 	private Map<String, Object> attributes;
+	/**
+	 * 节点对象
+	 */
+	private  Object object;
 
 	/**
 	 * 节点的子节点
@@ -50,6 +55,7 @@ public class Tree<T> {
 	/**
 	 * 是否有子节点
 	 */
+
 	private boolean hasChildren = false;
 
 	public String getId() {
@@ -92,6 +98,14 @@ public class Tree<T> {
 		this.attributes = attributes;
 	}
 
+	public Object getObject() {
+		return object;
+	}
+
+	public void setObject(Object object) {
+		this.object = object;
+	}
+
 	public List<Tree<T>> getChildren() {
 		return children;
 	}
@@ -124,7 +138,7 @@ public class Tree<T> {
 		this.parentId = parentId;
 	}
 
-	public Tree(String id, String text, Map<String, Object> state, boolean checked, Map<String, Object> attributes,
+	public Tree(String id, String text, Map<String, Object> state, boolean checked, Map<String, Object> attributes,Object object,
                 List<Tree<T>> children, boolean isParent, boolean isChildren, String parentID) {
 		super();
 		this.id = id;
@@ -132,6 +146,7 @@ public class Tree<T> {
 		this.state = state;
 		this.checked = checked;
 		this.attributes = attributes;
+		this.setObject(object);
 		this.children = children;
 		this.hasParent = isParent;
 		this.hasChildren = isChildren;

@@ -24,7 +24,11 @@ public class ContextFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         response.setCharacterEncoding("utf-8");
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
+        if(request.getRequestURI().startsWith("/api/login")){
+            filterChain.doFilter(request,response);
+            return;
+        }
         String token = request.getHeader(CommonConstants.CONTEXT_TOKEN);
         UserToken userToken = null;
         try {
