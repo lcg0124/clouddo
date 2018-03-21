@@ -2,6 +2,8 @@ package com.bootdo.clouddoadmin.service;
 
 import com.bootdo.clouddoadmin.domain.Tree;
 import com.bootdo.clouddoadmin.domain.MenuDO;
+import com.bootdo.clouddocommon.dto.RouterDTO;
+import com.bootdo.clouddocommon.utils.R;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
@@ -41,4 +43,17 @@ public interface MenuService {
 	MenuDO get(Long id);
 
 	Set<String> listPerms(Long userId);
+
+	/**
+	 * 获取角色下的权限所有id
+	 * @param roleId
+	 * @return
+	 */
+	List<Long> MenuIdsByRoleId(Long roleId);
+
+	/**
+	 * 用户的路由
+	 * @return
+	 */
+	List<RouterDTO> RouterDTOsByUserId(Long userId);
 }

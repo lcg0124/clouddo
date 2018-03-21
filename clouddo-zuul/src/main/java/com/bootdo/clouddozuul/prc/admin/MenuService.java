@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 @Headers("Content-Type:application/json")
-@FeignClient(name = "admin",configuration = FeignIntercepter.class)
+@FeignClient(name = "api-admin",configuration = FeignIntercepter.class)
 public interface MenuService {
-    @GetMapping ("/api/menu/userMenus")
+    @GetMapping ("/menu/userMenus")
     List<MenuDTO> userMenus();
 }

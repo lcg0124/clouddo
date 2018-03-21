@@ -8,9 +8,7 @@ import java.util.*;
 
 /**
  * tree TODO <br>
- * 
- * @author kangxu2 2017-1-7
- * 
+ *
  */
 public class Tree<T>  {
 	private static final long serialVersionUID = 1L;

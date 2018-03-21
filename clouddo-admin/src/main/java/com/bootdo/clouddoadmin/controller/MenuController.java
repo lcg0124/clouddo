@@ -17,15 +17,19 @@ import java.util.Map;
  * @author bootdo 1992lcg@163.com
  * @version V1.0
  */
-@RequestMapping("/api/menu")
+@RequestMapping("/menu")
 @RestController()
 public class MenuController {
     @Autowired
     MenuService menuService;
 
-    @GetMapping()
+    @GetMapping("tree")
     Tree<MenuDO>  tree(){
         return menuService.getTree();
+    }
+    @GetMapping
+    List<Tree<MenuDO>>  list(){
+        return menuService.getTree().getChildren();
     }
 
     @GetMapping("{id}")
@@ -47,9 +51,13 @@ public class MenuController {
         }
         return  R.error();
     }
+    @PostMapping
+    R save(@RequestBody MenuDO menuDO){
+        return R.operate(menuService.save(menuDO)>0);
+    }
 
-    @DeleteMapping("remove/{id}")
-    R remove(@PathVariable("id") Long id){
+    @DeleteMapping()
+    R remove(Long id){
         if(menuService.remove(id)>0){
             return R.ok();
         }
@@ -79,9 +87,18 @@ public class MenuController {
         return R.error();
     }
 
+    /**
+     * 当前用户菜单的树形结构
+     * @return
+     */
     @RequestMapping("/currentUserMenus")
     List<Tree<MenuDO>> currentUserMenus() {
         List<Tree<MenuDO>> menus = menuService.listMenuTree(Long.parseLong(FilterContextHandler.getUserID()));
         return menus;
+    }
+
+    @GetMapping("/roleId")
+    List<Long> menuIdsByRoleId(Long roleId){
+        return menuService.MenuIdsByRoleId(roleId);
     }
 }

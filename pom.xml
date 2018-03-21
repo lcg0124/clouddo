@@ -8,5 +8,14 @@
     <artifactId>clouddo</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-
+    <properties>
+        <org.mapstruct.version>1.1.0.Final</org.mapstruct.version>
+    </properties>
+    <modules>
+        <module>clouddo-common</module>
+        <module>clouddo-server</module>
+        <module>clouddo-zuul</module>
+        <module>clouddo-admin</module>
+        <module>clouddo-cms</module>
+    </modules>
 </project>

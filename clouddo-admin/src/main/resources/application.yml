@@ -1,15 +1,15 @@
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://localhost:8001/eureka/
 security:
   basic:
     enabled: false
 server:
-  port: 8762
+  port: 8003
 spring:
   application:
-    name: admin
+    name: api-admin
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/clouddo?useUnicode=true&characterEncoding=utf8
     username: root

@@ -25,7 +25,7 @@ public class ContextFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=UTF-8");
-        if(request.getRequestURI().startsWith("/api/login")){
+        if(request.getRequestURI().startsWith("/login")){
             filterChain.doFilter(request,response);
             return;
         }

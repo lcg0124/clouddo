@@ -1,9 +1,11 @@
 package com.bootdo.clouddoadmin.controller;
 
 import com.bootdo.clouddoadmin.domain.UserDO;
+import com.bootdo.clouddoadmin.service.MenuService;
 import com.bootdo.clouddoadmin.service.TokenService;
 import com.bootdo.clouddoadmin.service.UserService;
 import com.bootdo.clouddoadmin.utils.MD5Utils;
+import com.bootdo.clouddocommon.context.FilterContextHandler;
 import com.bootdo.clouddocommon.dto.LoginDTO;
 import com.bootdo.clouddocommon.dto.UserToken;
 import com.bootdo.clouddocommon.utils.JwtUtils;
@@ -23,13 +25,15 @@ import java.util.Map;
  * @author bootdo 1992lcg@163.com
  * @version V1.0
  */
-@RequestMapping("api")
+@RequestMapping()
 @RestController
 public class LoginController {
     @Autowired
     UserService userService;
     @Autowired
     TokenService tokenService;
+    @Autowired
+    MenuService menuService;
 
     @PostMapping("/login")
     R login(@Valid @RequestBody LoginDTO loginDTO, HttpServletRequest request, HttpServletResponse response) {
@@ -53,36 +57,18 @@ public class LoginController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //首先清除用户缓存权限
+        menuService.clearCache(userDO.getUserId());
         // String token = tokenService.createToken(userDO.getUserId());
-        return R.ok("登录成功").put("token", token).put("user",userDO);
+        return R.ok("登录成功").put("token", token).put("user",userDO).put("router",menuService.RouterDTOsByUserId(userDO.getUserId()));
     }
 
 
     @RequestMapping("/logout")
     R logout(HttpServletRequest request, HttpServletResponse response) {
-        String token = request.getHeader("Authorization");
-        tokenService.removeToken(token);
+        menuService.clearCache(Long.parseLong(FilterContextHandler.getUserID()));
         return R.ok();
-
     }
 
-    private String removeCookie(HttpServletRequest request, String name) {
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if (name.equals(cookie.getName())) {
-                cookie.setMaxAge(0);
-            }
-        }
-        return null;
-    }
 
-    private String getCookieValueByName(HttpServletRequest request, String name) {
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if (name.equals(cookie.getName())) {
-                return cookie.getValue();
-            }
-        }
-        return null;
-    }
 }

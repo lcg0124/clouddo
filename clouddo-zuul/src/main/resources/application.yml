@@ -1,9 +1,9 @@
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://localhost:8001/eureka/
 server:
-  port: 8769
+  port: 8002
 spring:
   application:
     name: zuul

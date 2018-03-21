@@ -4,16 +4,13 @@
 <mapper namespace="com.bootdo.clouddoadmin.dao.MenuDao">
 
 	<select id="get" resultType="com.bootdo.clouddoadmin.domain.MenuDO">
-		select
-		`menu_id`,`parent_id`,`name`,`url`,`perms`,`type`,`icon`,`order_num`,`gmt_create`,`gmt_modified`
-		from sys_menu where menu_id = #{value}
+		select `component`,`menu_id`,`parent_id`,`name`,`url`,`perms`,`type`,`icon`,`order_num`,`gmt_create`,`gmt_modified`,`redirect` from sys_menu where menu_id = #{value}
 	</select>
 
 	<select id="list" resultType="com.bootdo.clouddoadmin.domain.MenuDO">
-		select
-		`menu_id`,`parent_id`,`name`,`url`,`perms`,`type`,`icon`,`order_num`,`gmt_create`,`gmt_modified`
-		from sys_menu
+		select `component`,`menu_id`,`parent_id`,`name`,`url`,`perms`,`type`,`icon`,`order_num`,`gmt_create`,`gmt_modified`,`redirect` from sys_menu
 		<where>
+			<if test="component != null and component != ''"> and component = #{component} </if>
 			<if test="menuId != null and menuId != ''"> and menu_id = #{menuId} </if>
 			<if test="parentId != null and parentId != ''"> and parent_id = #{parentId} </if>
 			<if test="name != null and name != ''"> and name = #{name} </if>
@@ -24,6 +21,7 @@
 			<if test="orderNum != null and orderNum != ''"> and order_num = #{orderNum} </if>
 			<if test="gmtCreate != null and gmtCreate != ''"> and gmt_create = #{gmtCreate} </if>
 			<if test="gmtModified != null and gmtModified != ''"> and gmt_modified = #{gmtModified} </if>
+			<if test="redirect != null and redirect != ''"> and redirect = #{redirect} </if>
 		</where>
 		<choose>
 			<when test="sort != null and sort.trim() != ''">
@@ -41,6 +39,7 @@
 	<select id="count" resultType="int">
 		select count(*) from sys_menu
 		<where>
+			<if test="component != null and component != ''"> and component = #{component} </if>
 			<if test="menuId != null and menuId != ''"> and menu_id = #{menuId} </if>
 			<if test="parentId != null and parentId != ''"> and parent_id = #{parentId} </if>
 			<if test="name != null and name != ''"> and name = #{name} </if>
@@ -51,13 +50,14 @@
 			<if test="orderNum != null and orderNum != ''"> and order_num = #{orderNum} </if>
 			<if test="gmtCreate != null and gmtCreate != ''"> and gmt_create = #{gmtCreate} </if>
 			<if test="gmtModified != null and gmtModified != ''"> and gmt_modified = #{gmtModified} </if>
+			<if test="redirect != null and redirect != ''"> and redirect = #{redirect} </if>
 		</where>
 	</select>
 
-	<insert id="save" parameterType="com.bootdo.clouddoadmin.domain.MenuDO"
-		useGeneratedKeys="true" keyProperty="menuId">
+	<insert id="save" parameterType="com.bootdo.clouddoadmin.domain.MenuDO" useGeneratedKeys="true" keyProperty="menuId">
 		insert into sys_menu
 		(
+		`component`,
 		`parent_id`,
 		`name`,
 		`url`,
@@ -66,10 +66,12 @@
 		`icon`,
 		`order_num`,
 		`gmt_create`,
-		`gmt_modified`
+		`gmt_modified`,
+		`redirect`
 		)
 		values
 		(
+		#{component},
 		#{parentId},
 		#{name},
 		#{url},
@@ -78,13 +80,15 @@
 		#{icon},
 		#{orderNum},
 		#{gmtCreate},
-		#{gmtModified}
+		#{gmtModified},
+		#{redirect}
 		)
 	</insert>
 
 	<update id="update" parameterType="com.bootdo.clouddoadmin.domain.MenuDO">
 		update sys_menu
 		<set>
+			<if test="component != null">`component` = #{component}, </if>
 			<if test="parentId != null">`parent_id` = #{parentId}, </if>
 			<if test="name != null">`name` = #{name}, </if>
 			<if test="url != null">`url` = #{url}, </if>
@@ -93,7 +97,8 @@
 			<if test="icon != null">`icon` = #{icon}, </if>
 			<if test="orderNum != null">`order_num` = #{orderNum}, </if>
 			<if test="gmtCreate != null">`gmt_create` = #{gmtCreate}, </if>
-			<if test="gmtModified != null">`gmt_modified` = #{gmtModified}</if>
+			<if test="gmtModified != null">`gmt_modified` = #{gmtModified}, </if>
+			<if test="redirect != null">`redirect` = #{redirect}</if>
 		</set>
 		where menu_id = #{menuId}
 	</update>
@@ -104,16 +109,15 @@
 
 	<delete id="batchRemove">
 		delete from sys_menu where menu_id in
-		<foreach item="menuId" collection="array" open="(" separator=","
-			close=")">
+		<foreach item="menuId" collection="array" open="(" separator="," close=")">
 			#{menuId}
 		</foreach>
 	</delete>
 
 	<select id="listMenuByUserId" resultType="com.bootdo.clouddoadmin.domain.MenuDO">
 		select distinct
-		m.menu_id , parent_id, name, url,
-		perms,`type`,icon,order_num,gmt_create, gmt_modified
+		m.menu_id , parent_id, `name`, url,
+		perms,`type`,icon,order_num,gmt_create, gmt_modified,component
 		from sys_menu m
 		left
 		join sys_role_menu rm on m.menu_id = rm.menu_id left join

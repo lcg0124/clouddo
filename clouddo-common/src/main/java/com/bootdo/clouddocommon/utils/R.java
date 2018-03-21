@@ -12,7 +12,14 @@ public class R extends HashMap<String, Object> {
     }
 
     public static R error() {
-        return error(1, "操作失败");
+        return error(500, "操作失败");
+    }
+
+    public static R operate(boolean b){
+        if(b){
+            return R.ok();
+        }
+        return R.error();
     }
 
     public static R error(String msg) {
@@ -48,6 +55,14 @@ public class R extends HashMap<String, Object> {
 
     public static R error403() {
         return error(403, "你没有访问权限");
+    }
+
+    public static R data(Object data){
+        return R.ok().put("data",data);
+    }
+
+    public static R page(Object page){
+        return R.ok().put("page",page);
     }
 
     @Override

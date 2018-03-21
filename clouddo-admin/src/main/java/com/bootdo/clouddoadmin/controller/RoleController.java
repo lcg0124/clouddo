@@ -16,7 +16,7 @@ import java.util.Map;
  * @author bootdo
  * 角色
  */
-@RequestMapping("/api/role")
+@RequestMapping("/role")
 @RestController
 public class RoleController {
     @Autowired
@@ -37,7 +37,7 @@ public class RoleController {
     }
 
     @PostMapping
-    R save(RoleDO roleDO){
+    R save(@RequestBody RoleDO roleDO){
         if(roleService.save(roleDO)>0){
             return R.ok();
         }

@@ -32,7 +32,7 @@ public class AccessFilter extends ZuulFilter {
     MenuService menuService;
 
 
-    private String ignorePath = "/admin/api/login";
+    private String ignorePath = "/api-admin/login";
 
     @Override
     public String filterType() {
