@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="clouddo-admin" />
+        <module name="clouddo-cms" />
         <module name="clouddo-common" />
         <module name="clouddo-server" />
         <module name="clouddo-zuul" />
@@ -15,6 +16,7 @@
     <bytecodeTargetLevel>
       <module name="clouddo" target="1.5" />
       <module name="clouddo-admin" target="1.8" />
+      <module name="clouddo-cms" target="1.8" />
       <module name="clouddo-common" target="1.8" />
       <module name="clouddo-server" target="1.8" />
       <module name="clouddo-view" target="1.8" />

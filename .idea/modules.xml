@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/clouddo.iml" filepath="$PROJECT_DIR$/.idea/clouddo.iml" />
       <module fileurl="file://$PROJECT_DIR$/clouddo-admin/clouddo-admin.iml" filepath="$PROJECT_DIR$/clouddo-admin/clouddo-admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/clouddo-cms/clouddo-cms.iml" filepath="$PROJECT_DIR$/clouddo-cms/clouddo-cms.iml" />
       <module fileurl="file://$PROJECT_DIR$/clouddo-common/clouddo-common.iml" filepath="$PROJECT_DIR$/clouddo-common/clouddo-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/clouddo-server/clouddo-server.iml" filepath="$PROJECT_DIR$/clouddo-server/clouddo-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/clouddo-zuul/clouddo-zuul.iml" filepath="$PROJECT_DIR$/clouddo-zuul/clouddo-zuul.iml" />
