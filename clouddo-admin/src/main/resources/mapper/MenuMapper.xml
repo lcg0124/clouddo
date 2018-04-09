@@ -124,7 +124,7 @@
 		sys_user_role ur
 		on rm.role_id =ur.role_id where ur.user_id = #{id}
 		and
-		m.type in(0,1)
+		m.type in(0,1,2)
 		order by
 		m.order_num
 	</select>
