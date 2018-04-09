@@ -6,4 +6,4 @@
 
 4.启动clouddo-admin 权限微服务
 
-5.启动前端项目
+5.启动前端项目 https://gitee.com/lcg0124/clouddo-view.git
