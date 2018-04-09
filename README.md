@@ -1,4 +1,4 @@
-1.新建数据库，导数数据库脚本,修改clouddo-admin的数据库用户密码
+1.新建数据库，导数数据库脚本（clouddo-admin的根目录下）,修改clouddo-admin的数据库用户密码
 
 2.启动clouddo-server 注册中心
 
