@@ -25,27 +25,29 @@ import com.bootdo.clouddocommon.utils.R;
  */
 
 @RestController
-@RequestMapping("/clouddocms/file")
+@RequestMapping("/file")
 public class FileController {
 
     @Autowired
     private FileService fileService;
 
     @GetMapping("{id}")
-    public R get(@PathVariable Long id){
+    public R get(@PathVariable Long id) {
         FileDTO fileDTO = FileConvert.MAPPER.do2dto(fileService.get(id));
         return R.data(fileDTO);
     }
+
     /**
-    * 分页查询
-    */
+     * 分页查询
+     */
     @GetMapping
     public R list(@RequestParam Map<String, Object> params) {
         Query query = new Query(params);
         List<FileDO> fileList = fileService.list(query);
-        List<FileDTO> fileDTOS = FileConvert.MAPPER.dos2dtos(fileList);
+//        List<FileDTO> fileDTOS = FileConvert.MAPPER.dos2dtos(fileList);
         int total = fileService.count(query);
-        PageUtils pageUtils = new PageUtils(fileDTOS, total);
+//        PageUtils pageUtils = new PageUtils(fileDTOS, total);
+        PageUtils pageUtils = new PageUtils(fileList, total);
         return R.page(pageUtils);
     }
 
@@ -62,22 +64,22 @@ public class FileController {
      */
     @PutMapping
     public R update(FileDO file) {
-        return R.operate(fileService.update(file) >0 );
+        return R.operate(fileService.update(file) > 0);
     }
 
     /**
      * 删除
      */
     @DeleteMapping
-    public R remove( Long id) {
+    public R remove(Long id) {
         return R.operate(fileService.remove(id) > 0);
     }
 
     /**
      * 删除
      */
-    @DeleteMapping ("/batchRemove")
-    public R remove(@RequestParam("ids[]") Long[]ids) {
-        return R.operate(fileService.batchRemove(ids)>0);
+    @DeleteMapping("/batchRemove")
+    public R remove(@RequestParam("ids[]") Long[] ids) {
+        return R.operate(fileService.batchRemove(ids) > 0);
     }
 }

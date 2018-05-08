@@ -1,6 +1,6 @@
 package com.bootdo.clouddocommon.intercepter;
 
-import com.bootdo.clouddocommon.Constants.CommonConstants;
+import com.bootdo.clouddocommon.constants.CommonConstants;
 import com.bootdo.clouddocommon.context.FilterContextHandler;
 import com.bootdo.clouddocommon.dto.UserToken;
 import com.bootdo.clouddocommon.utils.JwtUtils;

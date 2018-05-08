@@ -53,14 +53,17 @@ public class LoginController {
         UserToken userToken = new UserToken(userDO.getUsername(), userDO.getUserId().toString(), userDO.getName());
         String token="";
         try {
-            token = JwtUtils.generateToken(userToken, 300*60*1000);
+            token = JwtUtils.generateToken(userToken, 2*60*60*1000);
         } catch (Exception e) {
             e.printStackTrace();
         }
         //首先清除用户缓存权限
         menuService.clearCache(userDO.getUserId());
         // String token = tokenService.createToken(userDO.getUserId());
-        return R.ok("登录成功").put("token", token).put("user",userDO).put("router",menuService.RouterDTOsByUserId(userDO.getUserId()));
+        return R.ok("登录成功")
+                .put("token", token).put("user",userDO)
+                .put("perms",menuService.PermsByUserId(userDO.getUserId()))
+                .put("router",menuService.RouterDTOsByUserId(userDO.getUserId()));
     }
 
 

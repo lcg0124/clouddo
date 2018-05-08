@@ -1,6 +1,6 @@
 package com.bootdo.clouddocommon.filter;
 
-import com.bootdo.clouddocommon.Constants.CommonConstants;
+import com.bootdo.clouddocommon.constants.CommonConstants;
 import com.bootdo.clouddocommon.context.FilterContextHandler;
 import com.bootdo.clouddocommon.dto.UserToken;
 import com.bootdo.clouddocommon.utils.JsonUtils;
@@ -25,8 +25,8 @@ public class ContextFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=UTF-8");
-        if(request.getRequestURI().startsWith("/login")){
-            filterChain.doFilter(request,response);
+        if (request.getRequestURI().startsWith("/login")) {
+            filterChain.doFilter(request, response);
             return;
         }
         String token = request.getHeader(CommonConstants.CONTEXT_TOKEN);
@@ -35,14 +35,14 @@ public class ContextFilter implements Filter {
             userToken = JwtUtils.getInfoFromToken(token);
         } catch (Exception e) {
             PrintWriter printWriter = response.getWriter();
-            printWriter.write(JsonUtils.toJson(R.error(403,"缺少token,非法请求")));
+            printWriter.write(JsonUtils.toJson(R.error403()));
             return;
         }
         FilterContextHandler.setToken(token);
         FilterContextHandler.setUsername(userToken.getUsername());
         FilterContextHandler.setName(userToken.getName());
         FilterContextHandler.setUserID(userToken.getUserId());
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 
     @Override

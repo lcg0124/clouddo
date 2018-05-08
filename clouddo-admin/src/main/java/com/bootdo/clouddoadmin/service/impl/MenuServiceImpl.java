@@ -209,6 +209,18 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    public List<String> PermsByUserId(Long userId) {
+        List<String> permsList = new ArrayList<>();
+        List<MenuDO> menuDOs = userMenus(userId);
+        for (MenuDO menuDO:menuDOs){
+            if(menuDO.getPerms()!=null && ""!=menuDO.getPerms()){
+                permsList.add(menuDO.getPerms());
+            }
+        }
+        return permsList;
+    }
+
+    @Override
     public List<Tree<MenuDO>> listMenuTree(Long id) {
         List<Tree<MenuDO>> trees = new ArrayList<Tree<MenuDO>>();
         List<MenuDO> menuDOs = menuMapper.listMenuByUserId(id);

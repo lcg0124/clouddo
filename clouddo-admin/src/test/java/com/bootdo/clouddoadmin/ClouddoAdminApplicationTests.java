@@ -1,8 +1,5 @@
 //package com.bootdo.clouddoadmin;
 //
-//import com.bootdo.clouddoadmin.utils.JwtUtils;
-//import com.bootdo.clouddoadmin.vo.UserToken;
-//import org.junit.Test;
 //import org.junit.runner.RunWith;
 //import org.springframework.boot.test.context.SpringBootTest;
 //import org.springframework.test.context.junit4.SpringRunner;
@@ -11,19 +8,44 @@
 //@SpringBootTest
 //public class ClouddoAdminApplicationTests {
 //
-//	@Test
-//	public void contextLoads() {
-//		UserToken userToken = new UserToken("admin",1L,"管理员");
-//		String jwt = null;
-//		try {
-//			jwt = JwtUtils.generateToken(userToken,1);
-//			Thread.sleep(100);
-//			UserToken userToken1 = JwtUtils.getInfoFromToken(jwt);
-//			System.out.println(userToken1);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+//    public static void main(String[] args) {
+//        MobileCardCompanyDO cardPayOrderModel = new MobileCardCompanyDO();
+//        cardPayOrderModel.setCompanyCode("HS");
+//        cardPayOrderModel.setCompanyDesc("a1231241241awdasdf");
+//        cardPayOrderModel.setCompanyName("123124dzvsds");
+//        cardPayOrderModel.setId(2l);
+//        cardPayOrderModel.setStatus("1");
+//        CompanyModel companyModel = new CompanyModel();
 //
-//	}
+//        /**
+//         * 10W次
+//         * BeanUtils.copyProperties：718
+//         * beanCopier.copy：56
+//         */
+//
+//        /**
+//         * 100W次
+//         * BeanUtils.copyProperties：5673
+//         * beanCopier.copy：70
+//         */
+//
+//        //BeanUtils性能
+//        long start = System.currentTimeMillis();
+//        for (int i = 0; i < 1000000; i++) {
+//            BeanUtils.copyProperties(cardPayOrderModel, companyModel);
+//        }
+//        long end = System.currentTimeMillis();
+//        System.out.println(end - start);
+//
+//        //BeanCopier性能
+//        long start1 = System.currentTimeMillis();
+//        BeanCopier beanCopier = BeanCopier.create(MobileCardCompanyDO.class, CompanyModel.class,
+//                false);
+//        for (int i = 0; i < 1000000; i++) {
+//            beanCopier.copy(cardPayOrderModel, companyModel, null);
+//        }
+//        long end1 = System.currentTimeMillis();
+//        System.out.println(end1 - start1);
+//    }
 //
 //}

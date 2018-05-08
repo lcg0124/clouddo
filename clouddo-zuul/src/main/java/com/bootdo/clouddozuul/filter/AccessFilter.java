@@ -1,6 +1,6 @@
 package com.bootdo.clouddozuul.filter;
 
-import com.bootdo.clouddocommon.Constants.CommonConstants;
+import com.bootdo.clouddocommon.constants.CommonConstants;
 import com.bootdo.clouddocommon.context.FilterContextHandler;
 import com.bootdo.clouddocommon.dto.MenuDTO;
 import com.bootdo.clouddocommon.dto.UserToken;
@@ -10,12 +10,8 @@ import com.bootdo.clouddocommon.utils.R;
 import com.bootdo.clouddozuul.prc.admin.MenuService;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

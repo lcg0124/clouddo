@@ -1,6 +1,6 @@
 package com.bootdo.clouddocommon.intercepter;
 
-import com.bootdo.clouddocommon.Constants.CommonConstants;
+import com.bootdo.clouddocommon.constants.CommonConstants;
 import com.bootdo.clouddocommon.context.FilterContextHandler;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;

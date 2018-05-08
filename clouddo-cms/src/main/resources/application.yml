@@ -6,10 +6,10 @@ security:
   basic:
     enabled: false
 server:
-  port: 8005
+  port: 8004
 spring:
   application:
-    name: api-admin
+    name: api-cms
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/clouddo?useUnicode=true&characterEncoding=utf8
     username: root
