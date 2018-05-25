@@ -4,13 +4,16 @@ import com.bootdo.clouddocommon.constants.CommonConstants;
 import com.bootdo.clouddocommon.context.FilterContextHandler;
 import com.bootdo.clouddocommon.dto.MenuDTO;
 import com.bootdo.clouddocommon.dto.UserToken;
-import com.bootdo.clouddocommon.utils.JsonUtils;
+import com.bootdo.clouddocommon.utils.JSONUtils;
 import com.bootdo.clouddocommon.utils.JwtUtils;
 import com.bootdo.clouddocommon.utils.R;
+import com.bootdo.clouddocommon.utils.StringUtils;
 import com.bootdo.clouddozuul.prc.admin.MenuService;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -55,6 +58,9 @@ public class AccessFilter extends ZuulFilter {
             return null;
         }
         String accessToken = request.getHeader(CommonConstants.CONTEXT_TOKEN);
+        if(null == accessToken || accessToken == ""){
+            accessToken = request.getParameter(CommonConstants.TOKEN);
+        }
         if (null == accessToken) {
             setFailedRequest(R.error401(), 200);
             return null;
@@ -91,7 +97,7 @@ public class AccessFilter extends ZuulFilter {
         PrintWriter out = null;
         try{
             out = response.getWriter();
-            out.write(JsonUtils.toJson(body));
+            out.write(JSONUtils.beanToJson(body));
             out.flush();
         }catch(IOException e){
             e.printStackTrace();

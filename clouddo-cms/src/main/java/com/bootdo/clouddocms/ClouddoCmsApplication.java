@@ -1,6 +1,5 @@
 package com.bootdo.clouddocms;
 
-import com.bootdo.clouddocommon.filter.ContextFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -13,13 +12,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 public class ClouddoCmsApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ClouddoCmsApplication.class, args);
-	}
-	@Bean
-	public FilterRegistrationBean filterRegistrationBean(){
-		FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new ContextFilter());
-		filterRegistrationBean.addUrlPatterns("/*");
-		return filterRegistrationBean;
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ClouddoCmsApplication.class, args);
+    }
+
 }

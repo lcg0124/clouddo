@@ -7,6 +7,10 @@ server:
 spring:
   application:
     name: zuul
+  servlet:
+    multipart:
+      max-file-size: 100Mb
+      max-request-size: 100Mb
 
 
 

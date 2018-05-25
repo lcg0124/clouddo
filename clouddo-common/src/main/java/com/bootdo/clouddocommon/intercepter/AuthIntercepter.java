@@ -14,7 +14,6 @@ public class AuthIntercepter extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
         String token = request.getHeader(CommonConstants.CONTEXT_TOKEN);
         UserToken userToken = JwtUtils.getInfoFromToken(token);
         FilterContextHandler.setToken(token);

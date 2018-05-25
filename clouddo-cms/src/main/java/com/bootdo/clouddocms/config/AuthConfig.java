@@ -1,14 +1,15 @@
-package com.bootdo.clouddoadmin.config;
+package com.bootdo.clouddocms.config;
 
 import com.bootdo.clouddocommon.intercepter.AuthIntercepter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
-public class AuthConfig extends WebMvcConfigurerAdapter {
+public class AuthConfig implements WebMvcConfigurer {
     @Bean
     public AuthIntercepter authIntercepter() {
         return new AuthIntercepter();
@@ -20,8 +21,7 @@ public class AuthConfig extends WebMvcConfigurerAdapter {
 
         // 排除配置
         addInterceptor.excludePathPatterns("/error");
-        addInterceptor.excludePathPatterns("/login**");
-        addInterceptor.excludePathPatterns("/test**");
+        addInterceptor.excludePathPatterns("/files/**");
 
         // 拦截配置
         addInterceptor.addPathPatterns("/**");

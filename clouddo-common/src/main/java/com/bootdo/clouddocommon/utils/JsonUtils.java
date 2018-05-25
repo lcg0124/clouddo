@@ -1,98 +1,85 @@
 package com.bootdo.clouddocommon.utils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
-import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JsonUtils {
-    private static ObjectMapper mapper = new ObjectMapper();
+public class JSONUtils {
+	/**
+	 * Bean对象转JSON
+	 * 
+	 * @param object
+	 * @param dataFormatString
+	 * @return
+	 */
+	public static String beanToJson(Object object, String dataFormatString) {
+		if (object != null) {
+			if (StringUtils.isEmpty(dataFormatString)) {
+				return JSONObject.toJSONString(object);
+			}
+			return JSON.toJSONStringWithDateFormat(object, dataFormatString);
+		} else {
+			return null;
+		}
+	}
 
-    public static String toString(Object obj){
-        return toJson(obj);
-    }
+	/**
+	 * Bean对象转JSON
+	 * 
+	 * @param object
+	 * @return
+	 */
+	public static String beanToJson(Object object) {
+		if (object != null) {
+			return JSON.toJSONString(object);
+		} else {
+			return null;
+		}
+	}
 
-    public static String toJson(Object obj){
-        try{
-            StringWriter writer = new StringWriter();
-            mapper.writeValue(writer, obj);
-            return writer.toString();
-        }catch(Exception e){
-            throw new RuntimeException("序列化对象【"+obj+"】时出错", e);
-        }
-    }
+	/**
+	 * String转JSON字符串
+	 * 
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public static String stringToJsonByFastjson(String key, String value) {
+		if (StringUtils.isEmpty(key) || StringUtils.isEmpty(value)) {
+			return null;
+		}
+		Map<String, String> map = new HashMap<String, String>(16);
+		map.put(key, value);
+		return beanToJson(map, null);
+	}
 
-    public static <T> T toBean(Class<T> entityClass, String jsonString){
-        try {
-            return mapper.readValue(jsonString, entityClass);
-        } catch (Exception e) {
-            throw new RuntimeException("JSON【"+jsonString+"】转对象时出错", e);
-        }
-    }
+	/**
+	 * 将json字符串转换成对象
+	 * 
+	 * @param json
+	 * @param clazz
+	 * @return
+	 */
+	public static Object jsonToBean(String json, Object clazz) {
+		if (StringUtils.isEmpty(json) || clazz == null) {
+			return null;
+		}
+		return JSON.parseObject(json, clazz.getClass());
+	}
 
-    /**
-     * 用于对象通过其他工具已转为JSON的字符形式，这里不需要再加上引号
-     * @param obj
-     * @param isObject
-     */
-    public static String getJsonSuccess(String obj, boolean isObject){
-        String jsonString = null;
-        if(obj == null){
-            jsonString = "{\"success\":true}";
-        }else{
-            jsonString = "{\"success\":true,\"data\":"+obj+"}";
-        }
-        return jsonString;
-    }
-
-    public static String getJsonSuccess(Object obj){
-        return getJsonSuccess(obj, null);
-    }
-
-    public static String getJsonSuccess(Object obj, String message) {
-        if(obj == null){
-            return "{\"success\":true,\"message\":\""+message+"\"}";
-        }else{
-            try{
-                Map<String, Object> map = new HashMap<String, Object>();
-                map.put("success", true);
-                return "{\"success\":true,"+toString(obj)+",\"message\":\""+message+"\"}";
-            }catch(Exception e){
-                throw new RuntimeException("序列化对象【"+obj+"】时出错", e);
-            }
-        }
-    }
-
-    public static String getJsonError(Object obj){
-        return getJsonError(obj, null);
-    }
-
-    public static String getJsonError(Object obj, String message) {
-        if(obj == null){
-            return "{\"success\":false,\"message\":\""+message+"\"}";
-        }else{
-            try{
-                obj = parseIfException(obj);
-                return "{\"success\":false,\"data\":"+toString(obj)+",\"message\":\""+message+"\"}";
-            }catch(Exception e){
-                throw new RuntimeException("序列化对象【"+obj+"】时出错", e);
-            }
-        }
-    }
-
-    public static Object parseIfException(Object obj){
-        if(obj instanceof Exception){
-            return getErrorMessage((Exception) obj, null);
-        }
-        return obj;
-    }
-
-    public static String getErrorMessage(Exception e, String defaultMessage){
-        return defaultMessage != null ? defaultMessage : null;
-    }
-
-    public static ObjectMapper getMapper() {
-        return mapper;
-    }
+	/**
+	 * json字符串转map
+	 * 
+	 * @param json
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static Map<String, Object> jsonToMap(String json) {
+		if (StringUtils.isEmpty(json)) {
+			return null;
+		}
+		return JSON.parseObject(json, Map.class);
+	}
 }

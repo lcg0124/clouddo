@@ -1,9 +1,15 @@
 package com.bootdo.clouddocms.controller;
 
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import com.bootdo.clouddocommon.context.FilterContextHandler;
+import com.bootdo.clouddocommon.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +21,7 @@ import com.bootdo.clouddocms.service.FileService;
 import com.bootdo.clouddocommon.utils.PageUtils;
 import com.bootdo.clouddocommon.utils.Query;
 import com.bootdo.clouddocommon.utils.R;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 文件上传
@@ -27,6 +34,11 @@ import com.bootdo.clouddocommon.utils.R;
 @RestController
 @RequestMapping("/file")
 public class FileController {
+    @Value("${app.filePath}")
+    String filePath;
+
+    @Value("${app.pre}")
+    String filePre;
 
     @Autowired
     private FileService fileService;
@@ -35,6 +47,28 @@ public class FileController {
     public R get(@PathVariable Long id) {
         FileDTO fileDTO = FileConvert.MAPPER.do2dto(fileService.get(id));
         return R.data(fileDTO);
+    }
+
+    @GetMapping("getToken")
+    public R getToken() {
+        return R.ok().put("token", FilterContextHandler.getToken()).put("url", "http://localhost:8002/api-cms/file/upload")
+                .put("key", UUID.randomUUID().toString());
+    }
+
+    @PostMapping("upload")
+    public R upload(MultipartFile file, String key) {
+        try {
+            String resPath = FileUtils.saveFile(file.getBytes(), filePath, key);
+            fileService.save(new FileDO() {{
+                setCreateDate(new Date());
+                setUrl("http://localhost:8004" + filePre + "/"+resPath);
+                setType(1);
+            }});
+            return R.ok().put("resPath", resPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return R.error("文件上传失败");
+        }
     }
 
     /**

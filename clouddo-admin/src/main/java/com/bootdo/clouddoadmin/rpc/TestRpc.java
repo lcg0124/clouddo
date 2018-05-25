@@ -1,4 +1,4 @@
-package com.bootdo.clouddozuul.prc.admin;
+package com.bootdo.clouddoadmin.rpc;
 
 import com.bootdo.clouddocommon.dto.MenuDTO;
 import com.bootdo.clouddocommon.intercepter.FeignIntercepter;
@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
-@Headers("Content-Type:application/json")
-@FeignClient(name = "api-admin", configuration = FeignIntercepter.class)
-public interface MenuService {
-    @GetMapping("/menu/userMenus")
-    List<MenuDTO> userMenus();
+@FeignClient(name = "course", configuration = FeignIntercepter.class)
+public interface TestRpc {
+    @GetMapping("/test/testRpc/test")
+    String test();
 }

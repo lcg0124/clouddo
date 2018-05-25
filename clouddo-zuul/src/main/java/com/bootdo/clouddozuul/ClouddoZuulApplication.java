@@ -16,7 +16,6 @@ import org.springframework.web.filter.CorsFilter;
 @EnableZuulProxy
 @EnableEurekaClient
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.bootdo"})
 public class ClouddoZuulApplication {
 
 	public static void main(String[] args) {

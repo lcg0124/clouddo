@@ -2,9 +2,6 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8001/eureka/
-security:
-  basic:
-    enabled: false
 server:
   port: 8004
 spring:
@@ -17,7 +14,14 @@ spring:
   jackson:
     date-format: yyyy-MM-dd
     time-zone: GMT+8
+  servlet:
+    multipart:
+      max-file-size: 100Mb
+      max-request-size: 100Mb
 mybatis:
   mapper-locations: mapper/**Mapper.xml
   configuration:
       map-underscore-to-camel-case: true
+app:
+  filePath: c:/var/uploaded_files/
+  pre: /files

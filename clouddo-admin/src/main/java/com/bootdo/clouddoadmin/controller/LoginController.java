@@ -5,6 +5,7 @@ import com.bootdo.clouddoadmin.service.MenuService;
 import com.bootdo.clouddoadmin.service.TokenService;
 import com.bootdo.clouddoadmin.service.UserService;
 import com.bootdo.clouddoadmin.utils.MD5Utils;
+import com.bootdo.clouddocommon.annotation.Log;
 import com.bootdo.clouddocommon.context.FilterContextHandler;
 import com.bootdo.clouddocommon.dto.LoginDTO;
 import com.bootdo.clouddocommon.dto.UserToken;
@@ -35,6 +36,7 @@ public class LoginController {
     @Autowired
     MenuService menuService;
 
+    @Log("登录")
     @PostMapping("/login")
     R login(@Valid @RequestBody LoginDTO loginDTO, HttpServletRequest request, HttpServletResponse response) {
         String username = loginDTO.getUsername().trim();
