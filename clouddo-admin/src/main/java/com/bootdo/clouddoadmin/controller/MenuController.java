@@ -3,6 +3,7 @@ package com.bootdo.clouddoadmin.controller;
 import com.bootdo.clouddoadmin.domain.MenuDO;
 import com.bootdo.clouddoadmin.domain.Tree;
 import com.bootdo.clouddoadmin.service.MenuService;
+import com.bootdo.clouddocommon.annotation.Log;
 import com.bootdo.clouddocommon.context.FilterContextHandler;
 import com.bootdo.clouddocommon.dto.MenuDTO;
 import com.bootdo.clouddocommon.utils.R;
@@ -23,6 +24,7 @@ public class MenuController {
     @Autowired
     MenuService menuService;
 
+    @Log("访问菜单")
     @GetMapping("tree")
     Tree<MenuDO>  tree(){
         return menuService.getTree();

@@ -5,16 +5,16 @@
 
 	<groupId>com.bootdo</groupId>
 	<artifactId>clouddo-zuul</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>clouddo-zuul</name>
-	<description>Demo project for Spring Boot</description>
+	<description>公用包</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.9.RELEASE</version>
+		<version>1.5.10.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
