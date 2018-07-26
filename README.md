@@ -1,6 +1,6 @@
 ### 项目介绍
 
-   clouddo是基于springcloud和vue微服务，前端分离的后台管理框架，可以作为springcloud和vue的入门学习框架，亦可以作为一个基础脚手架进行二次开发
+   clouddo是基于springcloud和vue微服务，前后端分离的后台管理框架，可以作为springcloud和vue的入门学习框架，亦可以作为一个基础脚手架进行二次开发
 
 ### 使用说明
 
