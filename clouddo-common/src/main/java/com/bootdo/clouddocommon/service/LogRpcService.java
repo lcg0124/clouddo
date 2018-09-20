@@ -4,7 +4,7 @@ import com.bootdo.clouddocommon.dto.LogDO;
 import com.bootdo.clouddocommon.intercepter.FeignIntercepter;
 import com.bootdo.clouddocommon.utils.R;
 import feign.Headers;
-import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.PostMapping;
 
