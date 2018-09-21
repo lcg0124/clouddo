@@ -2,9 +2,9 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8001/eureka/
-security:
-  basic:
-    enabled: false
+#security:
+#  basic:
+#    enabled: false
 server:
   port: 8005
 spring:
@@ -21,5 +21,5 @@ mybatis:
   mapper-locations: mapper/**Mapper.xml
   configuration:
       map-underscore-to-camel-case: true
-logging:
-  level: debug
+#logging:
+#  level: debug

@@ -1,7 +1,5 @@
 package com.bootdo.clouddocommon.utils;
 
-import org.apache.commons.lang.StringUtils;
-
 import javax.servlet.http.HttpServletRequest;
 
 public class HttpServletUtils {
