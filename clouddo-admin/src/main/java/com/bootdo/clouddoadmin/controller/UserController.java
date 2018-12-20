@@ -7,6 +7,7 @@ import com.bootdo.clouddoadmin.dto.do2dto.UserConvert;
 import com.bootdo.clouddoadmin.service.RoleService;
 import com.bootdo.clouddoadmin.service.UserService;
 import com.bootdo.clouddoadmin.utils.MD5Utils;
+import com.bootdo.clouddocommon.annotation.Log;
 import com.bootdo.clouddocommon.context.FilterContextHandler;
 import com.bootdo.clouddocommon.dto.LoginUserDTO;
 import com.bootdo.clouddocommon.utils.PageUtils;
@@ -66,6 +67,7 @@ public class UserController extends BaseController {
 	 * @param params
 	 * @return
 	 */
+	@Log("获取用户列表")
     @GetMapping()
     R listByPage(@RequestParam Map<String, Object> params) {
         Query query = new Query(params);

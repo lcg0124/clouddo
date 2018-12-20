@@ -56,4 +56,8 @@ public interface MenuService {
 	 * @return
 	 */
 	List<RouterDTO> RouterDTOsByUserId(Long userId);
+	/**
+	 * 用户权限
+	 */
+	List<String> PermsByUserId(Long userId);
 }

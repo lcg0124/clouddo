@@ -17,6 +17,7 @@
         <module>clouddo-zuul</module>
         <module>clouddo-admin</module>
         <module>clouddo-cms</module>
+        <module>clouddo-base</module>
     </modules>
     <repositories>
         <repository>
