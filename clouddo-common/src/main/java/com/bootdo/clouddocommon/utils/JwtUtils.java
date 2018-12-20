@@ -1,6 +1,6 @@
 package com.bootdo.clouddocommon.utils;
 
-import com.bootdo.clouddocommon.Constants.CommonConstants;
+import com.bootdo.clouddocommon.constants.CommonConstants;
 import com.bootdo.clouddocommon.dto.UserToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -18,6 +18,7 @@ public class JwtUtils {
                 .setSubject(userToken.getUsername())
                 .claim(CommonConstants.CONTEXT_USER_ID, userToken.getUserId())
                 .claim(CommonConstants.CONTEXT_NAME, userToken.getName())
+                .claim(CommonConstants.RENEWAL_TIME,new Date(System.currentTimeMillis()+expire/2))
                 .setExpiration(new Date(System.currentTimeMillis()+expire))
                 .signWith(SignatureAlgorithm.HS256, CommonConstants.JWT_PRIVATE_KEY)
                 .compact();

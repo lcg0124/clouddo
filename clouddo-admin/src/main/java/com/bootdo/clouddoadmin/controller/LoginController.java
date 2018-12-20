@@ -5,6 +5,7 @@ import com.bootdo.clouddoadmin.service.MenuService;
 import com.bootdo.clouddoadmin.service.TokenService;
 import com.bootdo.clouddoadmin.service.UserService;
 import com.bootdo.clouddoadmin.utils.MD5Utils;
+import com.bootdo.clouddocommon.annotation.Log;
 import com.bootdo.clouddocommon.context.FilterContextHandler;
 import com.bootdo.clouddocommon.dto.LoginDTO;
 import com.bootdo.clouddocommon.dto.UserToken;
@@ -35,6 +36,7 @@ public class LoginController {
     @Autowired
     MenuService menuService;
 
+    @Log("登录")
     @PostMapping("/login")
     R login(@Valid @RequestBody LoginDTO loginDTO, HttpServletRequest request, HttpServletResponse response) {
         String username = loginDTO.getUsername().trim();
@@ -53,14 +55,17 @@ public class LoginController {
         UserToken userToken = new UserToken(userDO.getUsername(), userDO.getUserId().toString(), userDO.getName());
         String token="";
         try {
-            token = JwtUtils.generateToken(userToken, 300*60*1000);
+            token = JwtUtils.generateToken(userToken, 2*60*60*1000);
         } catch (Exception e) {
             e.printStackTrace();
         }
         //首先清除用户缓存权限
         menuService.clearCache(userDO.getUserId());
         // String token = tokenService.createToken(userDO.getUserId());
-        return R.ok("登录成功").put("token", token).put("user",userDO).put("router",menuService.RouterDTOsByUserId(userDO.getUserId()));
+        return R.ok("登录成功")
+                .put("token", token).put("user",userDO)
+                .put("perms",menuService.PermsByUserId(userDO.getUserId()))
+                .put("router",menuService.RouterDTOsByUserId(userDO.getUserId()));
     }
 
 

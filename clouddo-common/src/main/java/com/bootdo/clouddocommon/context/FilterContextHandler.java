@@ -1,6 +1,6 @@
 package com.bootdo.clouddocommon.context;
 
-import com.bootdo.clouddocommon.Constants.CommonConstants;
+import com.bootdo.clouddocommon.constants.CommonConstants;
 
 import java.util.HashMap;
 import java.util.Map;

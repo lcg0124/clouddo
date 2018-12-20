@@ -1,0 +1,8 @@
+
+/.idea/
+/clouddo.iml
+/clouddo-*/clouddo-*.iml
+/clouddo-*/mvnw
+/clouddo-*/mvnw.cmd
+/clouddo-*/.mvn/
+/clouddo-base/mvnw
